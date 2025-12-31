@@ -1,4 +1,4 @@
-<p align="center">
+<img width="1920" height="945" alt="6354f567f9200ce00565317fa2c700b9" src="https://github.com/user-attachments/assets/7df1099a-03cf-4b0f-8965-935b8dd054a6" /><p align="center">
   <img src="https://img.shields.io/badge/React-18.2+-blue.svg" alt="React">
   <img src="https://img.shields.io/badge/Vite-5.0+-purple.svg" alt="Vite">
   <img src="https://img.shields.io/badge/TypeScript-5.0+-blue.svg" alt="TypeScript">
@@ -15,6 +15,7 @@
 </p>
 
 ---
+![Uploading 6354f567f9200ce00565317fa2c700b9.png…]()
 
 ## ✨ 功能特点
 
