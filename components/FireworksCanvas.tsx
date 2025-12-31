@@ -51,14 +51,17 @@ const FireworksCanvas = forwardRef<FireworksCanvasHandle, FireworksCanvasProps>(
   const createShapeParticles = useCallback((text: string, x: number, y: number, hue: number, sizeMult: number = 1, isCountdown: boolean = false) => {
     const offscreenCanvas = document.createElement('canvas');
     const offCtx = offscreenCanvas.getContext('2d')!;
-    
-    let fontSize = text.length > 2 ? 100 : 200; 
-    if (isCountdown) fontSize /= 2;
+
+    let fontSize = text.length > 5 ? 80 : (text.length > 2 ? 120 : 200);
+
+    // Mobile adjustment removed - handled by global viewport scaling in index.html
+
+    if (isCountdown) fontSize /= 1.5;
 
     offCtx.font = `bold ${fontSize}px Orbitron`;
     const metrics = offCtx.measureText(text);
-    offscreenCanvas.width = metrics.width + 60;
-    offscreenCanvas.height = fontSize + 60;
+    offscreenCanvas.width = metrics.width + 100; // Add more padding
+    offscreenCanvas.height = fontSize + 100;
     offCtx.fillStyle = 'white';
     offCtx.font = `bold ${fontSize}px Orbitron`;
     offCtx.textAlign = 'center';
@@ -66,8 +69,8 @@ const FireworksCanvas = forwardRef<FireworksCanvasHandle, FireworksCanvasProps>(
     offCtx.fillText(text, offscreenCanvas.width / 2, offscreenCanvas.height / 2);
 
     const imgData = offCtx.getImageData(0, 0, offscreenCanvas.width, offscreenCanvas.height).data;
-    const step = isCountdown ? 1 : 2; 
-    
+    const step = isCountdown ? 1 : 2;
+
     // Orange-Red (Hue 15) for countdown
     const colorStr = isCountdown ? `hsla(15, 100%, 60%, 1)` : `hsla(${hue}, 100%, 75%, 1)`;
 
@@ -107,13 +110,13 @@ const FireworksCanvas = forwardRef<FireworksCanvasHandle, FireworksCanvasProps>(
     }
 
     // Increased count and spread for "stunning" effect
-    let particleCount = phase === 'celebrating' ? 250 : 150; 
+    let particleCount = phase === 'celebrating' ? 250 : 150;
     const isGlitter = Math.random() > 0.6;
 
     while (particleCount--) {
       const angle = random(0, Math.PI * 2);
       const speed = random(1, phase === 'celebrating' ? 22 : 15);
-      
+
       particlesRef.current.push({
         x, y,
         vx: Math.cos(angle) * speed,
@@ -192,7 +195,7 @@ const FireworksCanvas = forwardRef<FireworksCanvasHandle, FireworksCanvasProps>(
       } else {
         fw.x += vx;
         fw.y += vy;
-        
+
         ctx.beginPath();
         ctx.moveTo(fw.coordinates[fw.coordinates.length - 1].x, fw.coordinates[fw.coordinates.length - 1].y);
         ctx.lineTo(fw.x, fw.y);
@@ -226,10 +229,10 @@ const FireworksCanvas = forwardRef<FireworksCanvasHandle, FireworksCanvasProps>(
 
     // Auto Launch logic
     timerTickRef.current++;
-    
-    let threshold = 25; 
-    if (phase === 'counting') threshold = 8; 
-    if (phase === 'celebrating') threshold = 5; 
+
+    let threshold = 25;
+    if (phase === 'counting') threshold = 8;
+    if (phase === 'celebrating') threshold = 5;
 
     if (timerTickRef.current >= threshold) {
       // Launch from more varied positions across the bottom
@@ -257,7 +260,7 @@ const FireworksCanvas = forwardRef<FireworksCanvasHandle, FireworksCanvasProps>(
 
     const handleClick = (e: MouseEvent) => {
       const launchCount = phase === 'celebrating' ? 12 : 6;
-      for(let i=0; i<launchCount; i++) {
+      for (let i = 0; i < launchCount; i++) {
         setTimeout(() => {
           const sx = e.clientX + random(-100, 100);
           createFirework(sx, canvas.height, sx, e.clientY + random(-50, 50));
